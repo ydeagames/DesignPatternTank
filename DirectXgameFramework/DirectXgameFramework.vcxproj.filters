@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>7b157b2a-1a0f-4315-b758-05896a2612af</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Framework Header">
+      <UniqueIdentifier>{6030d6b9-9150-49e4-8b76-e54591c106da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework Source">
+      <UniqueIdentifier>{a8cab200-f929-4f63-8ab3-52da7fbc3156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{c3337387-e39d-437e-a148-d599e1bef156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{2219d638-76a0-4556-a088-91b88f1283ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Framework Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Framework Header</Filter>
+    </ClInclude>
+    <ClInclude Include="dx.h">
+      <Filter>Framework Header</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Framework Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TankFactory.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGame.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX11.h">
+      <Filter>Framework Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ITank.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Cannon.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletFactory.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game.cpp">
+      <Filter>Framework Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Framework Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TankFactory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGame.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX11.cpp">
+      <Filter>Framework Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Cannon.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletFactory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>

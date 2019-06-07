@@ -7,7 +7,11 @@
 #include <DirectXMath.h>
 #include "StepTimer.h"
 #include "dx.h"
+#include <vector>
 #include "ITank.h"
+
+class Bullet;
+class BulletFactory;
 
 class Tank : public ITank
 {
@@ -94,6 +98,10 @@ public:
 	virtual void Initialize() 
 	{
 	};
+	// ショット打つ
+	virtual void Shot(std::vector<Bullet*>& bullets, BulletFactory* bulletFactory)
+	{
+	}
 	// 更新する
 	virtual void Update(const DX::StepTimer& timer)
 	{

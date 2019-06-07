@@ -1,7 +1,7 @@
 #include "Player.h"
 
 // コンストラクタ
-Player::Player() 
+Player::Player()
 {
 }
 
@@ -21,10 +21,14 @@ void Player::Initialize(const DirectX::SimpleMath::Vector2& position, const floa
 	m_tank->AddParts(tankFactory.Create(Tank::PARTS_ID::TURRET));
 	// Cannonオブジェクを生成する
 	m_tank->GetParts()->AddParts(tankFactory.Create(Tank::PARTS_ID::CANNON));
+
+	// 弾工場作成
+	m_bulletFactory = std::make_unique<BulletFactory>();
+	m_bulletFactory->Initialize();
 }
 
 // Playerオブジェクトを更新する
-bool Player::Update(const DX::StepTimer& timer) 
+bool Player::Update(const DX::StepTimer& timer)
 {
 	// キーボードの状態を取得する
 	DirectX::Keyboard::State keyboardState = m_keyboard->GetState();
@@ -85,10 +89,25 @@ bool Player::Update(const DX::StepTimer& timer)
 		// 回転角を設定する
 		m_tank->GetParts()->GetParts()->SetTurretAngle(m_tank->GetParts()->GetParts()->GetTurretAngle() + DirectX::XMConvertToRadians(1.0f));
 	}
+	// 発射
+	if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::Space))
+	{
+		static float time = 0;
+		time += static_cast<float>(timer.GetElapsedSeconds());
+		if (time > .1f)
+		{
+			// 発射
+			m_tank->GetParts()->GetParts()->Shot(m_bullets, m_bulletFactory.get());
+			time = 0;
+		}
+	}
 	// 移動する
 	m_tank->SetPosition(m_tank->GetPosition() + m_tank->GetVelocity());
 	// Tankオブジェクトを更新する
 	m_tank->Update(timer);
+	// 弾を更新
+	for (auto& bullet : m_bullets)
+		bullet->Update(timer);
 
 	return true;
 }
@@ -98,14 +117,23 @@ void Player::Render(DirectX::SpriteBatch& spriteBatch)
 {
 	// Tankオブジェクトを描画する
 	m_tank->Render(spriteBatch, m_tank->GetPosition(), m_tank->GetBodyAngle(), m_tank->GetColor());
+	// 弾を描画
+	for (auto& bullet : m_bullets)
+		bullet->Render(spriteBatch);
 }
 
 // 後処理をおこなう
-void Player::Finalize() 
+void Player::Finalize()
 {
 	// 再帰的にTankオブジェクトの後処理をおこなう
-	m_tank->Finalize();	
+	m_tank->Finalize();
 	// Tankオブジェクトをリセットする
-	if(m_tank != nullptr)
+	if (m_tank != nullptr)
 		delete m_tank;
+	// 弾をリセット
+	for (auto& bullet : m_bullets)
+	{
+		bullet->Finalize();
+		delete bullet;
+	}
 }

@@ -17,6 +17,7 @@
 #include "Turret.h"
 #include "Body.h"
 #include "Bullet.h"
+#include "BulletFactory.h"
 
 // PlayerÉNÉâÉX
 class Player 
@@ -45,6 +46,8 @@ private:
 	Tank* m_tank;
 	// íe
 	std::vector<Bullet*> m_bullets;
+	// íeçHèÍ
+	std::unique_ptr<BulletFactory> m_bulletFactory;
 };
 
 #endif // PLAYER_DEFINED

@@ -2,6 +2,7 @@
 #ifndef CANNON_DEFINED
 #define CANNON_DEFINED
 
+#include <vector>
 #include "Tank.h"
 
 // 砲塔クラス
@@ -14,6 +15,8 @@ public:
 	void AddParts(Tank* tank) override;
 	// パーツを取得する
 	Tank* GetParts() override;
+	// ショット打つ
+	void Shot(std::vector<Bullet*>& bullets, BulletFactory* bulletFactory) override;
 	// 初期化する 
 	void Initialize() override;
 	// 更新する 
@@ -31,7 +34,10 @@ public:
 private:
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-	// 
+	// 位置
+	DirectX::SimpleMath::Vector2 m_position;
+	// 向き
+	float m_angle;
 };
 
 #endif // CANNON_DEFINED

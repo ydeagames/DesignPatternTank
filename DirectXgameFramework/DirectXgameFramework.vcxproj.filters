@@ -64,6 +64,12 @@
     <ClInclude Include="Bullet.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="IShotStrategy.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shots.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -103,6 +109,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shots.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

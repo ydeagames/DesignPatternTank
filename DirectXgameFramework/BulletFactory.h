@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include <SimpleMath.h>
 #include <wrl/client.h>
+#include <vector>
 
 #include "Bullet.h"
 
@@ -13,13 +14,17 @@ class BulletFactory
 {
 public:
 	// コンストラクタ
-	BulletFactory();
+	BulletFactory(std::vector<Bullet*>* bullets);
 	// タンクのパーツを生成する
 	Bullet* Create(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity);
+	Bullet* CreateBomb(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity);
+	Bullet* CreateScattering(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector2 & after_velocity);
 	// 初期化する
 	void Initialize();
+	std::vector<Bullet*>& GetBullets();
 
 private:
+	std::vector<Bullet*>* m_bullets;
 	//// 位置 
 	//DirectX::SimpleMath::Vector2 m_position;
 	//// 速度 

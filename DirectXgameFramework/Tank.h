@@ -9,6 +9,7 @@
 #include "dx.h"
 #include <vector>
 #include "ITank.h"
+#include "StepTimer.h"
 
 class Bullet;
 class BulletFactory;
@@ -99,7 +100,15 @@ public:
 	{
 	};
 	// ショット打つ
-	virtual void Shot(std::vector<Bullet*>& bullets, BulletFactory* bulletFactory)
+	virtual void Shot(const DX::StepTimer& timer)
+	{
+	}
+	// ショットを切り替える
+	virtual void SwitchShot()
+	{
+	}
+	// バレットファクトリ
+	virtual void SetBulletFactory(BulletFactory* bulletFactory)
 	{
 	}
 	// 更新する

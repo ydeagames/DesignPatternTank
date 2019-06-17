@@ -8,6 +8,10 @@
 
 class Bullet
 {
+public:
+	static const DirectX::SimpleMath::Vector2 SIZE;
+
+protected:
 	// 位置
 	DirectX::SimpleMath::Vector2 m_position;
 	// 速度
@@ -18,16 +22,49 @@ class Bullet
 	DirectX::SimpleMath::Vector4 m_color;
 
 public:
-	Bullet(ID3D11ShaderResourceView* m_texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, DirectX::SimpleMath::Vector4& color);
+	Bullet(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, DirectX::SimpleMath::Vector4& color);
+	virtual ~Bullet() = default;
+
+	DirectX::SimpleMath::Vector2& GetPosition() { return m_position; }
+	virtual bool IsUsed() { return true; }
 
 	// 初期化する
-	void Initialize();
+	virtual void Initialize();
 	// 更新する
-	void Update(const DX::StepTimer& timer);
+	virtual void Update(const DX::StepTimer& timer);
 	// 描画する
-	void Render(DirectX::SpriteBatch& spriteBatch);
+	virtual void Render(DirectX::SpriteBatch& spriteBatch);
 	// 後処理をおこなう
-	void Finalize();
+	virtual void Finalize();
 
 };
 
+class Bomb : public Bullet
+{
+	float m_life;
+
+public:
+	Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, DirectX::SimpleMath::Vector4& color);
+	virtual ~Bomb() = default;
+
+	bool IsUsed() override { return m_life > 0; }
+
+	// 更新する
+	virtual void Update(const DX::StepTimer& timer);
+	// 描画する
+	virtual void Render(DirectX::SpriteBatch& spriteBatch);
+};
+
+
+class Scattering : public Bullet
+{
+	float m_life;
+	DirectX::SimpleMath::Vector2 m_after_velocity;
+
+public:
+	Scattering(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, const DirectX::SimpleMath::Vector2& after_velocity, DirectX::SimpleMath::Vector4& color);
+	virtual ~Scattering() = default;
+
+	// 更新する
+	virtual void Update(const DX::StepTimer& timer);
+};

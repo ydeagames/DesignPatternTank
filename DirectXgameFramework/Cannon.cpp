@@ -1,6 +1,8 @@
 #include "Cannon.h"
 #include "Bullet.h"
 #include "BulletFactory.h"
+#include "IShotStrategy.h"
+#include "Shots.h"
 
 // コンストラクタ
 Cannon::Cannon()
@@ -19,11 +21,36 @@ Tank* Cannon::GetParts()
 }
 
 // ショット打つ
-void Cannon::Shot(std::vector<Bullet*>& bullets, BulletFactory * bulletFactory)
+void Cannon::Shot(const DX::StepTimer& timer)
 {
-	auto vel = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(-m_angle));
-	auto pos = m_position + DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 70, DirectX::SimpleMath::Matrix::CreateRotationZ(-m_angle));
-	bullets.push_back(bulletFactory->Create(pos, vel));
+	m_shotState->Initialize(m_bulletFactory);
+	m_shotState->Shoot(timer, m_position, m_angle);
+}
+
+// ショット切り替える
+void Cannon::SwitchShot()
+{
+	switch (m_shotType)
+	{
+	case Cannon::ShotType::DEFAULT:
+		m_shotState = std::make_unique<DefaultShot>();
+		m_shotType = ShotType::NWAY;
+		break;
+	case Cannon::ShotType::NWAY:
+		m_shotState = std::make_unique<NWayShot>(3, 30);
+		m_shotType = ShotType::BOMB;
+		break;
+	case Cannon::ShotType::BOMB:
+		m_shotState = std::make_unique<BombShot>();
+		m_shotType = ShotType::SCATTERING;
+		break;
+	case Cannon::ShotType::SCATTERING:
+		m_shotState = std::make_unique<ScatteringShot>();
+		m_shotType = ShotType::DEFAULT;
+		break;
+	default:
+		break;
+	}
 }
 
 // 初期化する
@@ -34,6 +61,8 @@ void Cannon::Initialize()
 	// Turretテクスチャをロードする
 	DirectX::CreateWICTextureFromFile(DirectX11::Get().GetDevice().Get(),
 		L"tank4.png", nullptr, m_texture.ReleaseAndGetAddressOf());
+	m_shotType = ShotType::NWAY;
+	m_shotState = std::make_unique<NWayShot>(3, 30);
 }
 
 // 更新する
@@ -54,5 +83,10 @@ void Cannon::Finalize()
 {
 	// テクスチャをリセットする
 	m_texture.Reset();
+}
+
+void Cannon::SetBulletFactory(BulletFactory* bulletFactory)
+{
+	m_bulletFactory = bulletFactory;
 }
 

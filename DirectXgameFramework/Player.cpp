@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 // コンストラクタ
 Player::Player()
@@ -19,12 +20,13 @@ void Player::Initialize(const DirectX::SimpleMath::Vector2& position, const floa
 	m_tank = tankFactory.Create(Tank::PARTS_ID::BODY);
 	// Turretオブジェクを生成する
 	m_tank->AddParts(tankFactory.Create(Tank::PARTS_ID::TURRET));
-	// Cannonオブジェクを生成する
-	m_tank->GetParts()->AddParts(tankFactory.Create(Tank::PARTS_ID::CANNON));
 
 	// 弾工場作成
-	m_bulletFactory = std::make_unique<BulletFactory>();
+	m_bulletFactory = std::make_unique<BulletFactory>(&m_bullets);
 	m_bulletFactory->Initialize();
+	// Cannonオブジェクを生成する
+	m_tank->GetParts()->AddParts(tankFactory.Create(Tank::PARTS_ID::CANNON));
+	m_tank->GetParts()->GetParts()->SetBulletFactory(m_bulletFactory.get());
 }
 
 // Playerオブジェクトを更新する
@@ -97,9 +99,14 @@ bool Player::Update(const DX::StepTimer& timer)
 		if (time > .1f)
 		{
 			// 発射
-			m_tank->GetParts()->GetParts()->Shot(m_bullets, m_bulletFactory.get());
+			m_tank->GetParts()->GetParts()->Shot(timer);
 			time = 0;
 		}
+	}
+	// 切り替え
+	if (m_keyboardTracker->IsKeyPressed(DirectX::Keyboard::Keys::X))
+	{
+		m_tank->GetParts()->GetParts()->SwitchShot();
 	}
 	// 移動する
 	m_tank->SetPosition(m_tank->GetPosition() + m_tank->GetVelocity());
@@ -108,6 +115,28 @@ bool Player::Update(const DX::StepTimer& timer)
 	// 弾を更新
 	for (auto& bullet : m_bullets)
 		bullet->Update(timer);
+
+	{
+		DirectX::SimpleMath::Vector2 size = Bullet::SIZE;
+
+		DirectX::SimpleMath::Vector2 windowSize = DirectX::SimpleMath::Vector2(float(DirectX11::Get().GetWidth()), float(DirectX11::Get().GetHeight()));
+
+		DirectX::SimpleMath::Vector2 regionMin = -size / 2.f;
+		DirectX::SimpleMath::Vector2 regionMax = windowSize + (DirectX::SimpleMath::Vector2)(size / 2.f);
+
+		for (auto itr = m_bullets.begin(); itr != m_bullets.end();)
+		{
+			auto& bullet = (*itr);
+			auto& pos = bullet->GetPosition();
+
+			if (pos.x < regionMin.x || pos.y < regionMin.y || pos.x > regionMax.x || pos.y > regionMax.y || !bullet->IsUsed())
+			{
+				itr = m_bullets.erase(itr);
+			} else ++itr;
+		}
+
+		//std::cout << "count : " << m_bullets.size();
+	}
 
 	return true;
 }

@@ -22,9 +22,9 @@ Bullet* BulletFactory::CreateBomb(const DirectX::SimpleMath::Vector2 & position,
 	return bullet;
 }
 
-Bullet * BulletFactory::CreateScattering(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector2 & after_velocity)
+Bullet * BulletFactory::CreateScattering(const DirectX::SimpleMath::Vector2 & position, const std::deque<Scattering::Task>& tasks)
 {
-	auto bullet = new Scattering(m_texture.Get(), position, velocity, after_velocity, m_color);
+	auto bullet = new Scattering(m_texture.Get(), position, tasks, m_color);
 	bullet->Initialize();
 	return bullet;
 }

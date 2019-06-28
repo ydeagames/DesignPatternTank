@@ -31,10 +31,14 @@ void ScatteringShot::Shoot(const DX::StepTimer& timer, const DirectX::SimpleMath
 	float rad = DirectX::XM_2PI / m_n;
 	for (int i = 0; i < m_n; i++)
 	{
-		auto vel = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(-angle));
-		auto after_vel = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(rad * i));
-		auto pos = position + DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 70, DirectX::SimpleMath::Matrix::CreateRotationZ(-angle));
-		m_bulletFactory->GetBullets().push_back(m_bulletFactory->CreateScattering(pos, vel, after_vel));
+		for (int j = 0; j < m_n; j++)
+		{
+			auto vel1 = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(-angle));
+			auto vel2 = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(rad * i));
+			auto vel3 = DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 4, DirectX::SimpleMath::Matrix::CreateRotationZ(rad * j));
+			auto pos = position + DirectX::SimpleMath::Vector2::Transform(DirectX::SimpleMath::Vector2::UnitX * 70, DirectX::SimpleMath::Matrix::CreateRotationZ(-angle));
+			m_bulletFactory->GetBullets().push_back(m_bulletFactory->CreateScattering(pos, { { 2, vel1 },{ 2, vel2 },{ 100, vel3 } }));
+		}
 	}
 }
 

@@ -37,7 +37,7 @@ void Cannon::SwitchShot()
 		m_shotType = ShotType::NWAY;
 		break;
 	case Cannon::ShotType::NWAY:
-		m_shotState = std::make_unique<NWayShot>(3, 30);
+		m_shotState = std::make_unique<NWayShot>(5, 30);
 		m_shotType = ShotType::BOMB;
 		break;
 	case Cannon::ShotType::BOMB:

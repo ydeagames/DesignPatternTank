@@ -18,7 +18,7 @@ public:
 	// タンクのパーツを生成する
 	Bullet* Create(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity);
 	Bullet* CreateBomb(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity);
-	Bullet* CreateScattering(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector2 & after_velocity);
+	Bullet* CreateScattering(const DirectX::SimpleMath::Vector2 & position, const std::deque<Scattering::Task>& tasks);
 	// 初期化する
 	void Initialize();
 	std::vector<Bullet*>& GetBullets();

@@ -5,6 +5,7 @@
 #include "WICTextureLoader.h"
 #include "SpriteBatch.h"
 #include "StepTimer.h"
+#include <deque>
 
 class Bullet
 {
@@ -58,11 +59,18 @@ public:
 
 class Scattering : public Bullet
 {
-	float m_life;
-	DirectX::SimpleMath::Vector2 m_after_velocity;
+public:
+	struct Task
+	{
+		float m_life;
+		DirectX::SimpleMath::Vector2 m_after_velocity;
+	};
+
+private:
+	std::deque<Task> m_tasks;
 
 public:
-	Scattering(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, const DirectX::SimpleMath::Vector2& after_velocity, DirectX::SimpleMath::Vector4& color);
+	Scattering(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const std::deque<Task>& tasks, DirectX::SimpleMath::Vector4& color);
 	virtual ~Scattering() = default;
 
 	// çXêVÇ∑ÇÈ

@@ -51,19 +51,24 @@ void Bomb::Render(DirectX::SpriteBatch & spriteBatch)
 	}
 }
 
-Scattering::Scattering(ID3D11ShaderResourceView * texture, const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector2 & after_velocity, DirectX::SimpleMath::Vector4 & color)
-	: Bullet(texture, position, velocity, color)
-	, m_life(2)
-	, m_after_velocity(after_velocity)
+Scattering::Scattering(ID3D11ShaderResourceView * texture, const DirectX::SimpleMath::Vector2 & position, const std::deque<Task>& tasks, DirectX::SimpleMath::Vector4 & color)
+	: Bullet(texture, position, tasks.front().m_after_velocity, color)
+	, m_tasks(tasks)
 {
 }
 
 void Scattering::Update(const DX::StepTimer & timer)
 {
-	m_life -= timer.GetElapsedSeconds();
-	if (m_life < 1)
+	if (!m_tasks.empty())
 	{
-		m_velocity = m_after_velocity;
+		auto& front = m_tasks.front();
+		front.m_life -= timer.GetElapsedSeconds();
+		if (front.m_life < 1)
+		{
+			m_tasks.pop_front();
+			if (!m_tasks.empty())
+				m_velocity = m_tasks.front().m_after_velocity;
+		}
 	}
 	m_position += m_velocity;
 }

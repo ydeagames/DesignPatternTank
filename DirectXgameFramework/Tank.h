@@ -104,7 +104,7 @@ public:
 	{
 	}
 	// ショットを切り替える
-	virtual void SwitchShot()
+	virtual void SwitchShot(int d = 1)
 	{
 	}
 	// バレットファクトリ

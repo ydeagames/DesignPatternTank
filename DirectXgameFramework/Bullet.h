@@ -23,7 +23,7 @@ protected:
 	DirectX::SimpleMath::Vector4 m_color;
 
 public:
-	Bullet(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, DirectX::SimpleMath::Vector4& color);
+	Bullet(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, const DirectX::SimpleMath::Vector4& color);
 	virtual ~Bullet() = default;
 
 	DirectX::SimpleMath::Vector2& GetPosition() { return m_position; }
@@ -45,7 +45,7 @@ class Bomb : public Bullet
 	float m_life;
 
 public:
-	Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, DirectX::SimpleMath::Vector4& color);
+	Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& velocity, const DirectX::SimpleMath::Vector4& color);
 	virtual ~Bomb() = default;
 
 	bool IsUsed() override { return m_life > 0; }
@@ -70,7 +70,7 @@ private:
 	std::deque<Task> m_tasks;
 
 public:
-	Scattering(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const std::deque<Task>& tasks, DirectX::SimpleMath::Vector4& color);
+	Scattering(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& position, const std::deque<Task>& tasks, const DirectX::SimpleMath::Vector4& color);
 	virtual ~Scattering() = default;
 
 	// çXêVÇ∑ÇÈ

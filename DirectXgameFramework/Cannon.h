@@ -6,18 +6,11 @@
 #include "Tank.h"
 #include "IShotStrategy.h"
 #include "StepTimer.h"
+#include "SpriteFont.h"
 
 // 砲塔クラス
 class Cannon : public Tank
 {
-	enum class ShotType
-	{
-		DEFAULT,
-		NWAY,
-		BOMB,
-		SCATTERING,
-	};
-
 public:
 	// コンストラクタ
 	Cannon();
@@ -28,7 +21,7 @@ public:
 	// ショット打つ
 	void Shot(const DX::StepTimer& timer) override;
 	// ショットを切り替える
-	void SwitchShot() override;
+	void SwitchShot(int d = 1) override;
 	// 初期化する 
 	void Initialize() override;
 	// 更新する 
@@ -48,14 +41,14 @@ private:
 	BulletFactory* m_bulletFactory;
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-	// 
-	std::unique_ptr<IWeapon> m_shotState;
 	// 位置
 	DirectX::SimpleMath::Vector2 m_position;
 	// 向き
 	float m_angle;
 	// ショットの種類
-	ShotType m_shotType;
+	int m_shotType;
+	// フォント
+	std::unique_ptr<DirectX::SpriteFont> m_font;
 };
 
 #endif // CANNON_DEFINED

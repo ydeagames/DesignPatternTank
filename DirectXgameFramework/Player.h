@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <SimpleMath.h>
 #include <Keyboard.h>
+#include <Mouse.h>
 
 #include "StepTimer.h"
 #include "dx.h"
@@ -41,11 +42,17 @@ private:
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	// キーボードステートトラッカ
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyboardTracker;
+	// マウス
+	std::unique_ptr<DirectX::Mouse> m_mouse;
+	// マウスステートトラッカ
+	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
+	// マウスウィール
+	int m_mouseWheel;
 
 	// タンク
 	Tank* m_tank;
 	// 弾
-	std::vector<Bullet*> m_bullets;
+	std::vector<std::unique_ptr<Bullet>> m_bullets;
 	// 弾工場
 	std::unique_ptr<BulletFactory> m_bulletFactory;
 };

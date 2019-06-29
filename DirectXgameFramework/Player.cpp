@@ -14,6 +14,11 @@ void Player::Initialize(const DirectX::SimpleMath::Vector2& position, const floa
 	// KeyboardStateTrackerオブジェクトを生成する
 	m_keyboardTracker = std::make_unique<DirectX::Keyboard::KeyboardStateTracker>();
 
+	// Mouseオブジェクトを生成する
+	m_mouse = std::make_unique<DirectX::Mouse>();
+	// ButtonStateTrackerオブジェクトを生成する
+	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
+
 	// TankFactoryオブジェクトを生成する
 	TankFactory tankFactory(position, angle, color);
 	// Bodyオブジェクトを生成する 
@@ -36,6 +41,10 @@ bool Player::Update(const DX::StepTimer& timer)
 	DirectX::Keyboard::State keyboardState = m_keyboard->GetState();
 	// キーボードトラッカーを更新する
 	m_keyboardTracker->Update(keyboardState);
+	// マウスの状態を取得する
+	DirectX::Mouse::State mouseState = m_mouse->GetState();
+	// マウストラッカーを更新する
+	m_mouseTracker->Update(mouseState);
 
 	// 速度をリセットする
 	m_tank->SetVelocity(DirectX::SimpleMath::Vector2(0.0f, 0.0f));
@@ -79,18 +88,18 @@ bool Player::Update(const DX::StepTimer& timer)
 		// 速度を設定する
 		m_tank->SetVelocity(-DirectX::SimpleMath::Vector2::Transform(Tank::SPEED, rotation));
 	}
-	// キャノンを奥に回転する
-	if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::C))
-	{
-		// 回転角を設定する
-		m_tank->GetParts()->GetParts()->SetTurretAngle(m_tank->GetParts()->GetParts()->GetTurretAngle() - DirectX::XMConvertToRadians(1.0f));
-	}
-	// キャノンを手前に回転する
-	else if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::Z))
-	{
-		// 回転角を設定する
-		m_tank->GetParts()->GetParts()->SetTurretAngle(m_tank->GetParts()->GetParts()->GetTurretAngle() + DirectX::XMConvertToRadians(1.0f));
-	}
+	//// キャノンを奥に回転する
+	//if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::C))
+	//{
+	//	// 回転角を設定する
+	//	m_tank->GetParts()->GetParts()->SetTurretAngle(m_tank->GetParts()->GetParts()->GetTurretAngle() - DirectX::XMConvertToRadians(1.0f));
+	//}
+	//// キャノンを手前に回転する
+	//else if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::Z))
+	//{
+	//	// 回転角を設定する
+	//	m_tank->GetParts()->GetParts()->SetTurretAngle(m_tank->GetParts()->GetParts()->GetTurretAngle() + DirectX::XMConvertToRadians(1.0f));
+	//}
 	// 発射
 	if (keyboardState.IsKeyDown(DirectX::Keyboard::Keys::Space))
 	{
@@ -104,10 +113,24 @@ bool Player::Update(const DX::StepTimer& timer)
 		}
 	}
 	// 切り替え
+	if (m_keyboardTracker->IsKeyPressed(DirectX::Keyboard::Keys::Z))
+	{
+		m_tank->GetParts()->GetParts()->SwitchShot(-1);
+	}
+	// 切り替え
 	if (m_keyboardTracker->IsKeyPressed(DirectX::Keyboard::Keys::X))
 	{
-		m_tank->GetParts()->GetParts()->SwitchShot();
+		m_tank->GetParts()->GetParts()->SwitchShot(1);
 	}
+	// ウィール
+	{
+		int wheel = m_mouseTracker->GetLastState().scrollWheelValue;
+		int diff = wheel - m_mouseWheel;
+		m_mouseWheel = wheel;
+
+		m_tank->GetParts()->GetParts()->SwitchShot(diff == 0 ? 0 : (diff > 0 ? -1 : 1));
+	}
+
 	// 移動する
 	m_tank->SetPosition(m_tank->GetPosition() + m_tank->GetVelocity());
 	// Tankオブジェクトを更新する
@@ -163,6 +186,5 @@ void Player::Finalize()
 	for (auto& bullet : m_bullets)
 	{
 		bullet->Finalize();
-		delete bullet;
 	}
 }

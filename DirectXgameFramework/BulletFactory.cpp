@@ -2,31 +2,9 @@
 #include "WICTextureLoader.h"
 #include "DirectX11.h"
 
-BulletFactory::BulletFactory(std::vector<Bullet*>* bullets)
-	: m_color(DirectX::Colors::White)
-	, m_bullets(bullets)
+BulletFactory::BulletFactory(std::vector<std::unique_ptr<Bullet>>* bullets)
+	: m_bullets(bullets)
 {
-}
-
-Bullet* BulletFactory::Create(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity)
-{
-	auto bullet = new Bullet(m_texture.Get(), position, velocity, m_color);
-	bullet->Initialize();
-	return bullet;
-}
-
-Bullet* BulletFactory::CreateBomb(const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity)
-{
-	auto bullet = new Bomb(m_texture.Get(), position, velocity, m_color);
-	bullet->Initialize();
-	return bullet;
-}
-
-Bullet * BulletFactory::CreateScattering(const DirectX::SimpleMath::Vector2 & position, const std::deque<Scattering::Task>& tasks)
-{
-	auto bullet = new Scattering(m_texture.Get(), position, tasks, m_color);
-	bullet->Initialize();
-	return bullet;
 }
 
 void BulletFactory::Initialize()
@@ -36,7 +14,7 @@ void BulletFactory::Initialize()
 		L"bullet.png", nullptr, m_texture.ReleaseAndGetAddressOf());
 }
 
-std::vector<Bullet*>& BulletFactory::GetBullets()
+std::vector<std::unique_ptr<Bullet>>& BulletFactory::GetBullets()
 {
 	return *m_bullets;
 }

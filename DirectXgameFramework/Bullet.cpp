@@ -2,7 +2,7 @@
 
 const DirectX::SimpleMath::Vector2 Bullet::SIZE(6.0f, 6.0f);
 
-Bullet::Bullet(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, DirectX::SimpleMath::Vector4& color)
+Bullet::Bullet(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector4& color)
 	: m_texture(texture)
 	, m_position(position)
 	, m_velocity(velocity)
@@ -29,7 +29,7 @@ void Bullet::Finalize()
 {
 }
 
-Bomb::Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, DirectX::SimpleMath::Vector4& color)
+Bomb::Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2 & position, const DirectX::SimpleMath::Vector2 & velocity, const DirectX::SimpleMath::Vector4& color)
 	: Bullet(texture, position, velocity, color)
 	, m_life(2)
 {
@@ -51,7 +51,7 @@ void Bomb::Render(DirectX::SpriteBatch & spriteBatch)
 	}
 }
 
-Scattering::Scattering(ID3D11ShaderResourceView * texture, const DirectX::SimpleMath::Vector2 & position, const std::deque<Task>& tasks, DirectX::SimpleMath::Vector4 & color)
+Scattering::Scattering(ID3D11ShaderResourceView * texture, const DirectX::SimpleMath::Vector2 & position, const std::deque<Task>& tasks, const DirectX::SimpleMath::Vector4 & color)
 	: Bullet(texture, position, tasks.front().m_after_velocity, color)
 	, m_tasks(tasks)
 {

@@ -45,15 +45,16 @@ void Cannon::Initialize()
 		L"tank4.png", nullptr, m_texture.ReleaseAndGetAddressOf());
 	m_shotType = 0;
 	m_font = std::make_unique<DirectX::SpriteFont>(DirectX11::Get().GetDevice().Get(), L"logofont.spritefont");
+	SwitchShot(1);
 }
 
 // 更新する
-void Cannon::Update(const DX::StepTimer& timer)
+void Cannon::Update(const DX::StepTimer & timer)
 {
 }
 
 // 描画する
-void Cannon::Render(DirectX::SpriteBatch& spriteBatch, DirectX::SimpleMath::Vector2& position, float angle, DirectX::SimpleMath::Vector4& color)
+void Cannon::Render(DirectX::SpriteBatch & spriteBatch, DirectX::SimpleMath::Vector2 & position, float angle, DirectX::SimpleMath::Vector4 & color)
 {
 	m_position = position;
 	m_angle = angle;
@@ -61,6 +62,10 @@ void Cannon::Render(DirectX::SpriteBatch& spriteBatch, DirectX::SimpleMath::Vect
 
 	{
 		std::wostringstream sb;
+		sb << L"WASDキー 矢印キー: 移動" << std::endl;
+		sb << L"QEキー: 主砲回転" << std::endl;
+		sb << L"ZXキー マウスホイール: 弾切り替え" << std::endl;
+		sb << std::endl;
 		int i = 0;
 		for (auto& weapon : Shots::GetWeapons())
 		{
@@ -78,7 +83,7 @@ void Cannon::Finalize()
 	m_texture.Reset();
 }
 
-void Cannon::SetBulletFactory(BulletFactory* bulletFactory)
+void Cannon::SetBulletFactory(BulletFactory * bulletFactory)
 {
 	m_bulletFactory = bulletFactory;
 }

@@ -37,7 +37,7 @@ Bomb::Bomb(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2
 
 void Bomb::Update(const DX::StepTimer & timer)
 {
-	m_life -= timer.GetElapsedSeconds();
+	m_life -= 1.f / 60.f;
 	if (m_life > 1)
 		m_position += m_velocity;
 }
@@ -62,8 +62,8 @@ void Scattering::Update(const DX::StepTimer & timer)
 	if (!m_tasks.empty())
 	{
 		auto& front = m_tasks.front();
-		front.m_life -= timer.GetElapsedSeconds();
-		if (front.m_life < 1)
+		front.m_life -= 1.f / 60.f;
+		if (front.m_life < 0)
 		{
 			m_tasks.pop_front();
 			if (!m_tasks.empty())
